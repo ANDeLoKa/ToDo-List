@@ -1,0 +1,23 @@
+{
+    "Internal Identifier": 3,
+    "Activities": [
+        {
+            "ID": 0,
+            "Description": "Clean the House"
+        },
+        {
+            "ID": 1,
+            "Description": "Walk the Dog"
+        },
+        {
+            "ID": 3,
+            "Description": "Walk the Dog Again"
+        }
+    ],
+    "Today": [
+        {
+            "ID": 2,
+            "Description": "Make Homeworks"
+        }
+    ]
+}
