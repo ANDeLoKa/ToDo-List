@@ -152,6 +152,9 @@ class GUI(Ctk.CTk):
         https://pythonguides.com/python-tkinter-todo-list/
         https://github.com/Akascape/CTkListbox/blob/main/CTkListbox/ctk_listbox.py
         '''
+
+        # Possible solution for params
+        # https://stackoverflow.com/questions/78530673/how-to-update-the-text-of-a-list-element-within-a-ctklistbox
         
         database = self._readJson()
         print(ID)
