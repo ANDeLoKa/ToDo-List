@@ -124,26 +124,19 @@ class GUI(Ctk.CTk):
         database = self._readJson()
         
         input_dialog = Ctk.CTkInputDialog(title="New Task", text="Task Description:")
-        new_task_desc = input_dialog.get_input()
+        new_task_desc = input_dialog.get_input().strip()
+
+        new_task = {
+            "ID" : database["Internal_Identifier"],
+            "Description" : new_task_desc
+        }
+            
+        database[group].append(new_task)
+        database["Internal_Identifier"] += 1
         
-        if not (new_task_desc.__eq__("")):
-            for char in new_task_desc:
-                if char.__eq__(" "):
-                    pass
-                    # fix for this type of input "      {string}       "
-                else:
-                    new_task = {
-                        "ID" : database["Internal_Identifier"],
-                        "Description" : new_task_desc
-                    }
-                    
-                    database[group].append(new_task)
-                    database["Internal_Identifier"] += 1
-                    
-                    self._writeJson(database)
-                    self._renderGroup(group)
-                    
-                    break
+        self._writeJson(database)
+        self._renderGroup(group)
+
         return None
 
     def _deleteTask(self, desc : str, group : str):
