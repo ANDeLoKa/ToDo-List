@@ -1,4 +1,5 @@
 import customtkinter as Ctk
+from CTkListbox import *
 import json as Js
 '''
        Class Overview
@@ -69,8 +70,8 @@ class GUI(Ctk.CTk):
         self.selection_frame = Ctk.CTkFrame(self, width=160)
         self.selection_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsw")
 
-        self.task_frame = Ctk.CTkScrollableFrame(self, width=400, height=370, fg_color="transparent")
-        self.task_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.task_lb = CTkListbox(self, width=390, height=350, fg_color="transparent", border_width=0)
+        self.task_lb.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
         
         activities_button = Ctk.CTkButton(self.selection_frame, text="Activities", font=self.Font, text_color=self.Colors["Black"], fg_color=self.Colors["Ash_Grey"], hover_color=self.Colors["Ash_Grey_Hover"], command=lambda:self._renderGroup("Activities"))
         activities_button.grid(row=0, column=0, padx=10, pady=5)
@@ -105,19 +106,22 @@ class GUI(Ctk.CTk):
         }
         '''
         
-        for child in self.task_frame.winfo_children():
+        for child in self.task_lb.winfo_children():
             child.destroy()
 
-        add_task_frame = Ctk.CTkFrame(self.task_frame, fg_color="transparent")
-        add_task_frame.grid(row=0, column=0, padx=10, pady=3, sticky="wens")
-        btn_add_task = Ctk.CTkButton(add_task_frame, text="Add a Task", command=lambda:self._addTask(group), fg_color=self.Colors["Ash_Grey_Add_Task"], hover_color=self.Colors["Ash_Grey_Add_Task_Hover"], font=self.Font, text_color=self.Colors["Black"])
+        '''
+        add_task_lb = CTkListbox(self.task_lb, fg_color="transparent")
+        add_task_lb.grid(row=0, column=0, padx=10, pady=3, sticky="wens")
+        '''
+        
+        btn_add_task = Ctk.CTkButton(self.task_lb, text="Add a Task", command=lambda:self._addTask(group), fg_color=self.Colors["Ash_Grey_Add_Task"], hover_color=self.Colors["Ash_Grey_Add_Task_Hover"], font=self.Font, text_color=self.Colors["Black"])
         btn_add_task.grid(row=0, column=0, padx=5, pady=5, sticky="we")
 
         for i, task in enumerate(database[group], start=1):
-            f = Ctk.CTkFrame(self.task_frame, height=40)
+            f = Ctk.CTkFrame(self.task_lb, height=40)
             f.grid(row=i, column=0, padx=10, pady=3, sticky="we")
 
-            cb = Ctk.CTkCheckBox(f, text=task["Description"], fg_color=self.Colors["Ash_Grey"], hover_color=self.Colors["Ash_Grey_Hover"], command=lambda:self._deleteTask(task["ID"], group), width=350)
+            cb = Ctk.CTkCheckBox(f, text=task["Description"], fg_color=self.Colors["Ash_Grey"], hover_color=self.Colors["Ash_Grey_Hover"], command=lambda:self._deleteTask(["ID"], group), width=350)
             cb.grid(row=0, column=0, padx=5, pady=5)
         
     def _addTask(self, group : str):
@@ -139,13 +143,21 @@ class GUI(Ctk.CTk):
 
         return None
 
-    def _deleteTask(self, desc : str, group : str):
+    def _deleteTask(self, ID : str, group : str):
+
+
+        # Code Base
+
+        '''
+        https://pythonguides.com/python-tkinter-todo-list/
+        https://github.com/Akascape/CTkListbox/blob/main/CTkListbox/ctk_listbox.py
+        '''
         
         database = self._readJson()
-        print(desc)
+        print(ID)
         
         for task in database[group]:
-            if task["Description"].__eq__(desc):
+            if task["ID"].__eq__(ID):
                 del task
 
         self._writeJson(database)
